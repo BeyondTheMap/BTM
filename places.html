@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Places to Travel - Beyond the Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700&family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+           body {
+                    font-family: 'Open Sans', sans-serif;
+                    color: #333;
+                    line-height: 1.6; 
+                    background-color: #f9f9f9;
+                    background-image: url('11.jpg');
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                    background-position: center;
+                       }
+        }
+        
+        .container, .place-card, .modal-content {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(2px);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+        
+        /* Rest of your CSS remains the same */
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ff7e5f;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            font-family: 'Montserrat', sans-serif;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #ff7e5f;
+        }
+        
+        .page-title {
+            text-align: center;
+            padding: 60px 0 40px;
+            background-color: rgba(255, 255, 255, 0.7);
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .page-title h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .page-title p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .places-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 0 0 60px;
+        }
+        
+        .place-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .place-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .place-card:hover .card-image img {
+            transform: scale(1.05);
+        }
+        
+        .card-content {
+            padding: 25px;
+        }
+        
+        .card-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .card-content .location {
+            display: flex;
+            align-items: center;
+            color: #ff7e5f;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .card-content .location i {
+            margin-right: 5px;
+        }
+        
+        .card-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .read-more {
+            display: inline-block;
+            background: #ff7e5f;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .read-more:hover {
+            background: #e56a4d;
+            transform: translateY(-2px);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+        
+        .modal-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.4s;
+        }
+        
+        .modal-header {
+            position: relative;
+        }
+        
+        .modal-header img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        
+        .modal-header h2 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+        }
+        
+        .modal-body {
+            padding: 30px;
+        }
+        
+        .modal-body p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .close-modal:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        footer {
+            background-color: rgba(51, 51, 51, 0.9);
+            color: #000000;
+            padding: 40px 0;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .footer-content p {
+            margin-bottom: 20px;
+        }
+        
+        .social-links a {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #ff7e5f;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 10px 5px;
+            }
+            
+            .page-title h1 {
+                font-size: 2.2rem;
+            }
+            
+            .places-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-header img {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">Beyond the Map</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="places.html">Places to Travel</a></li>
+                    <li><a href="guide.html">Traveling Guide</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="page-title">
+            <h1>Discover Amazing Destinations</h1>
+            <p>Explore these breathtaking locations that will leave you in awe of our beautiful planet</p>
+        </div>
+        
+        <div class="places-grid">
+            <!-- Machu Picchu -->
+            <div class="place-card">
+                <div class="card-image">
+                    <img src="p1.jpg" alt="Machu Picchu">
+                </div>
+                <div class="card-content">
+                    <h3>Machu Picchu</h3>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Peru</span>
+                    </div>
+                    <p>The ancient Inca city nestled high in the Andes Mountains, offering stunning views and rich history.</p>
+                    <a href="#" class="read-more" onclick="showModal('modal1')">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Cappadocia -->
+            <div class="place-card">
+                <div class="card-image">
+                    <img src="p2.jpg" alt="Cappadocia">
+                </div>
+                <div class="card-content">
+                    <h3>Cappadocia</h3>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Turkey</span>
+                    </div>
+                    <p>Famous for its unique fairy chimneys, cave dwellings, and unforgettable hot air balloon rides.</p>
+                    <a href="#" class="read-more" onclick="showModal('modal2')">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Sigiriya -->
+            <div class="place-card">
+                <div class="card-image">
+                    <img src="p3.jpg" alt="Sigiriya">
+                </div>
+                <div class="card-content">
+                    <h3>Sigiriya</h3>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Sri Lanka</span>
+                    </div>
+                    <p>An ancient rock fortress with stunning frescoes and panoramic views from its summit.</p>
+                    <a href="#" class="read-more" onclick="showModal('modal3')">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Great Barrier Reef -->
+            <div class="place-card">
+                <div class="card-image">
+                    <img src="p4.jpg" alt="Great Barrier Reef">
+                </div>
+                <div class="card-content">
+                    <h3>Great Barrier Reef</h3>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Australia</span>
+                    </div>
+                    <p>The world's largest coral reef system, home to thousands of marine species and breathtaking underwater views.</p>
+                    <a href="#" class="read-more" onclick="showModal('modal4')">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Petra -->
+            <div class="place-card">
+                <div class="card-image">
+                    <img src="p5.jpg" alt="Petra">
+                </div>
+                <div class="card-content">
+                    <h3>Petra</h3>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Jordan</span>
+                    </div>
+                    <p>The ancient "Rose City" carved into pink sandstone cliffs, one of the New Seven Wonders of the World.</p>
+                    <a href="#" class="read-more" onclick="showModal('modal5')">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Banff National Park -->
+            <div class="place-card">
+                <div class="card-image">
+                    <img src="p6.jpg" alt="Banff National Park">
+                </div>
+                <div class="card-content">
+                    <h3>Banff National Park</h3>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Canada</span>
+                    </div>
+                    <p>Canada's first national park, featuring turquoise lakes, majestic mountains, and abundant wildlife.</p>
+                    <a href="#" class="read-more" onclick="showModal('modal6')">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Santorini -->
+            <div class="place-card">
+                <div class="card-image">
+                    <img src="p7.jpg" alt="Santorini">
+                </div>
+                <div class="card-content">
+                    <h3>Santorini</h3>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Greece</span>
+                    </div>
+                    <p>Famous for its whitewashed buildings, blue domes, and stunning sunsets over the caldera.</p>
+                    <a href="#" class="read-more" onclick="showModal('modal7')">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Cliffs of Moher -->
+            <div class="place-card">
+                <div class="card-image">
+                    <img src="p8.jpg" alt="Cliffs of Moher">
+                </div>
+                <div class="card-content">
+                    <h3>Cliffs of Moher</h3>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ireland</span>
+                    </div>
+                    <p>Sea cliffs that rise 120 meters above the Atlantic Ocean, offering breathtaking coastal views.</p>
+                    <a href="#" class="read-more" onclick="showModal('modal8')">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Adams Peak -->
+            <div class="place-card">
+                <div class="card-image">
+                    <img src="p9.jpg" alt="Adams Peak">
+                </div>
+                <div class="card-content">
+                    <h3>Adams Peak</h3>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Sri Lanka</span>
+                    </div>
+                    <p>A sacred mountain with a mysterious footprint at its summit, popular for sunrise hikes.</p>
+                    <a href="#" class="read-more" onclick="showModal('modal9')">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Angel Falls -->
+            <div class="place-card">
+                <div class="card-image">
+                    <img src="p10.jpg" alt="Angel Falls">
+                </div>
+                <div class="card-content">
+                    <h3>Angel Falls</h3>
+                    <div class="location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Venezuela</span>
+                    </div>
+                    <p>The world's highest uninterrupted waterfall, plunging 979 meters from the Auyán-tepui mountain.</p>
+                    <a href="#" class="read-more" onclick="showModal('modal10')">Read More</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Modals for each destination -->
+    <!-- Machu Picchu Modal -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="p1.jpg" alt="Machu Picchu">
+                <h2>Machu Picchu, Peru</h2>
+                <span class="close-modal" onclick="closeModal('modal1')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Machu Picchu is a 15th-century Inca citadel located in the Eastern Cordillera of southern Peru on a 2,430-meter (7,970 ft) mountain ridge. Often referred to as the "Lost City of the Incas", it is the most familiar icon of Inca civilization.</p>
+                <p>The Incas built the estate around 1450 but abandoned it a century later at the time of the Spanish conquest. Although known locally, it was not known to the Spanish during the colonial period and remained unknown to the outside world until American historian Hiram Bingham brought it to international attention in 1911.</p>
+                <p>Machu Picchu was built in the classical Inca style, with polished dry-stone walls. Its three primary structures are the Inti Watana, the Temple of the Sun, and the Room of the Three Windows. Most of the outlying buildings have been reconstructed to give tourists a better idea of how they originally appeared.</p>
+                <p>The site was declared a UNESCO World Heritage Site in 1983 and was named one of the New Seven Wonders of the World in 2007. Visitors can reach Machu Picchu either by hiking the Inca Trail or by taking a train from Cusco.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Cappadocia Modal -->
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="p2.jpg" alt="Cappadocia">
+                <h2>Cappadocia, Turkey</h2>
+                <span class="close-modal" onclick="closeModal('modal2')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Cappadocia is a historical region in Central Anatolia, Turkey. It is largely in the provinces of Nevşehir, Kayseri, Aksaray, Kırşehir, Sivas and Niğde. The name was traditionally used in Christian sources throughout history and is still widely used as an international tourism concept to define a region of exceptional natural wonders characterized by fairy chimneys and a unique historical and cultural heritage.</p>
+                <p>The region is famous for its unique geological features called fairy chimneys, which are tall, cone-shaped rock formations clustered in Monks Valley, Göreme and elsewhere. These formations were created by volcanic eruptions that blanketed the region in thick ash, which later solidified into soft rock. Over millions of years, wind and water eroded this rock into the spectacular shapes seen today.</p>
+                <p>Cappadocia is also known for its underground cities, carved out of the soft volcanic rock, which were used by early Christians as hiding places. The Göreme Open Air Museum is a monastic complex composed of churches, chapels and monasteries carved into the rock, with beautiful Byzantine frescoes decorating the walls.</p>
+                <p>One of the most popular activities in Cappadocia is taking a hot air balloon ride at sunrise, offering breathtaking views of the unique landscape. The region's winemaking tradition dates back thousands of years, with grapes grown in volcanic soil producing distinctive local wines.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sigiriya Modal -->
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="p3.jpg" alt="Sigiriya">
+                <h2>Sigiriya, Sri Lanka</h2>
+                <span class="close-modal" onclick="closeModal('modal3')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Sigiriya or Sinhagiri is an ancient rock fortress located in the northern Matale District near the town of Dambulla in the Central Province, Sri Lanka. The name refers to a site of historical and archaeological significance that is dominated by a massive column of rock nearly 200 meters (660 ft) high.</p>
+                <p>According to the ancient Sri Lankan chronicle the Culavamsa, this site was selected by King Kasyapa (477 – 495 CE) for his new capital. He built his palace on top of this rock and decorated its sides with colorful frescoes. On a small plateau about halfway up the side of this rock he built a gateway in the form of an enormous lion. The name of this place is derived from this structure — Sīnhāgiri, the Lion Rock.</p>
+                <p>The capital and the royal palace were abandoned after the king's death. It was used as a Buddhist monastery until the 14th century. Sigiriya today is a UNESCO listed World Heritage Site. It is one of the best preserved examples of ancient urban planning.</p>
+                <p>The site contains the ruins of an upper palace located on the flat top of the rock, a mid-level terrace that includes the Lion Gate and the mirror wall with its frescoes, and the lower palaces located behind the lavish lower gardens. The site's water gardens, moats and ramparts are among the oldest landscaped gardens in the world.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Great Barrier Reef Modal -->
+    <div id="modal4" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="p4.jpg" alt="Great Barrier Reef">
+                <h2>Great Barrier Reef, Australia</h2>
+                <span class="close-modal" onclick="closeModal('modal4')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>The Great Barrier Reef is the world's largest coral reef system composed of over 2,900 individual reefs and 900 islands stretching for over 2,300 kilometers (1,400 mi) over an area of approximately 344,400 square kilometers (133,000 sq mi). The reef is located in the Coral Sea, off the coast of Queensland, Australia.</p>
+                <p>The Great Barrier Reef can be seen from outer space and is the world's biggest single structure made by living organisms. This reef structure is composed of and built by billions of tiny organisms, known as coral polyps. It supports a wide diversity of life and was selected as a World Heritage Site in 1981.</p>
+                <p>The Great Barrier Reef has long been known to and used by the Aboriginal Australian and Torres Strait Islander peoples, and is an important part of local groups' cultures and spirituality. The reef is a very popular destination for tourists, especially in the Whitsunday Islands and Cairns regions. Tourism is an important economic activity for the region, generating over AUD$3 billion per year.</p>
+                <p>Activities such as scuba diving and snorkeling are particularly popular, with many reefs accessible from the islands. The Great Barrier Reef Marine Park protects a large part of the reef, helping to limit the impact of human use such as overfishing and tourism. Environmental pressures on the reef and its ecosystem include water quality from runoff, climate change accompanied by mass coral bleaching, and cyclic outbreaks of the crown-of-thorns starfish.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Petra Modal -->
+    <div id="modal5" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="p5.jpg" alt="Petra">
+                <h2>Petra, Jordan</h2>
+                <span class="close-modal" onclick="closeModal('modal5')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Petra is a historical and archaeological city in southern Jordan. It is famous for its rock-cut architecture and water conduit system. Another name for Petra is the Rose City due to the color of the stone out of which it is carved.</p>
+                <p>Established possibly as early as 312 BC as the capital city of the Arab Nabataeans, it is a symbol of Jordan, as well as Jordan's most-visited tourist attraction. The Nabataeans were nomadic Arabs who invested in Petra's proximity to the incense trade routes by establishing it as a major regional trading hub.</p>
+                <p>The trading business gained the Nabataeans considerable revenue and Petra became the focus of their wealth. The Nabataeans were accustomed to living in the barren deserts, unlike their enemies, and were able to repel attacks by taking advantage of the area's mountainous terrain. They were particularly skillful in harvesting rainwater, agriculture and stone carving.</p>
+                <p>Petra is accessed through a 1.2-kilometer-long (0.75 mi) gorge called the Siq, which leads directly to the Khazneh (the Treasury). Famous for its many rock-cut architecture and water conduit system, Petra is also called the "Rose City" because of the color of the stone from which it is carved. It has been a UNESCO World Heritage Site since 1985 and was named one of the New Seven Wonders of the World in 2007.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Banff National Park Modal -->
+    <div id="modal6" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="p6.jpg" alt="Banff National Park">
+                <h2>Banff National Park, Canada</h2>
+                <span class="close-modal" onclick="closeModal('modal6')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Banff National Park is Canada's oldest national park, established in 1885. Located in the Rocky Mountains, it spans 6,641 square kilometers (2,564 sq mi) of mountainous terrain, with numerous glaciers and ice fields, dense coniferous forest, and alpine landscapes.</p>
+                <p>The park is located in Alberta, encompassing the resort town of Banff and numerous other recreational areas. The Icefields Parkway extends from Lake Louise, connecting to Jasper National Park in the north. Provincial forests and Yoho National Park are neighbors to the west, while Kootenay National Park is located to the south and Kananaskis Country to the southeast.</p>
+                <p>Banff National Park is known for its turquoise-colored lakes, including Lake Louise and Moraine Lake, which are fed by glacier meltwater containing rock flour that gives them their distinctive color. The park is home to several species of mammals, including grizzly and black bears, cougars, wolves, elk, and bighorn sheep, as well as hundreds of bird species.</p>
+                <p>The park's main attractions include the Banff townsite, the Cave and Basin National Historic Site, the hot springs, Lake Minnewanka, the Columbia Icefield, and the scenic drives along the Bow Valley Parkway and the Icefields Parkway. Activities in the park include hiking, biking, skiing, and camping in some of the world's most breathtaking mountain scenery.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Santorini Modal -->
+    <div id="modal7" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="p7.jpg" alt="Santorini">
+                <h2>Santorini, Greece</h2>
+                <span class="close-modal" onclick="closeModal('modal7')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Santorini is an island in the southern Aegean Sea, about 200 km (120 mi) southeast of Greece's mainland. It is the largest island of a small, circular archipelago which bears the same name and is the remnant of a volcanic caldera.</p>
+                <p>The island was the site of one of the largest volcanic eruptions in recorded history: the Minoan eruption (sometimes called the Thera eruption), which occurred about 3,600 years ago at the height of the Minoan civilization. The eruption left a large caldera surrounded by volcanic ash deposits hundreds of meters deep.</p>
+                <p>Santorini is famous for its dramatic views, stunning sunsets from Oia town, the whitewashed buildings, and its very own active volcano. The island has an area of about 73 km² (28 sq mi) and a population of around 15,000. The municipality of Santorini includes the inhabited islands of Santorini and Therasia and the uninhabited islands of Nea Kameni, Palaia Kameni, Aspronisi, and Christiana.</p>
+                <p>The island's principal port is Athinios. The capital, Fira, clings to the top of the cliff looking down on the lagoon. The volcanic rocks present from the prior eruptions feature olivine and have a small presence of hornblende. Santorini's primary industry is tourism, particularly in the summer months. The island's wines are also among the most renowned in Greece.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Cliffs of Moher Modal -->
+    <div id="modal8" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="p8.jpg" alt="Cliffs of Moher">
+                <h2>Cliffs of Moher, Ireland</h2>
+                <span class="close-modal" onclick="closeModal('modal8')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>The Cliffs of Moher are sea cliffs located at the southwestern edge of the Burren region in County Clare, Ireland. They run for about 14 kilometers (9 miles). At their southern end, they rise 120 meters (390 ft) above the Atlantic Ocean at Hag's Head, and reach their maximum height of 214 meters (702 ft) just north of O'Brien's Tower, eight kilometers (5 miles) to the north.</p>
+                <p>The cliffs take their name from an old promontory fort called Mothar or Moher, which once stood on Hag's Head, the southernmost point of the cliffs. The writer Thomas Johnson Westropp referred to it in 1905 as Moher Uí Ruis or Moher Uí Ruidhin. The fort stood on the site of the present-day Moher Tower, a round stone tower built in 1808 by Sir Cornelius O'Brien as an observation tower for the hundreds of Victorian tourists who visited the cliffs at the time.</p>
+                <p>The cliffs consist mainly of beds of Namurian shale and sandstone, with the oldest rocks being found at the bottom of the cliffs. It is possible to see 300-million-year-old river channels cutting through the base of the cliffs. There are many animals living on the cliffs, including an estimated 30,000 birds representing more than 20 species. These include Atlantic puffins, which live in large colonies at isolated parts of the cliffs and on the small Goat Island.</p>
+                <p>The cliffs are one of the most popular tourist destinations in Ireland and topped the list of attractions in 2006 by receiving almost one million visitors. Since 2011, they have formed part of the Burren and Cliffs of Moher Geopark, one of a family of geotourism destinations throughout Europe that are members of the European Geoparks Network and also recognized by UNESCO.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Adams Peak Modal -->
+    <div id="modal9" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="p9.jpg" alt="Adams Peak">
+                <h2>Adams Peak, Sri Lanka</h2>
+                <span class="close-modal" onclick="closeModal('modal9')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Adam's Peak is a 2,243 m (7,359 ft) tall conical mountain located in central Sri Lanka. It is well known for the Sri Pada (Śrī Pāda; sacred footprint), a 1.8 m (5 ft 11 in) rock formation near the summit, which in Buddhist tradition is held to be the footprint of the Buddha, in Hindu tradition that of Hanuman or Shiva (it is sometimes called Shiva padam), and in some Islamic and Christian traditions that of Adam, or that of St. Thomas.</p>
+                <p>The mountain is located in the southern reaches of the Central Highlands, in the Ratnapura District and Nuwara Eliya district of the Sabaragamuwa Province and Central Province —lying about 40 km (25 mi) northeast of the city of Ratnapura and 32 km (20 mi) southwest of the city of Hatton. The surrounding region is largely forested hills, with no mountain of comparable size nearby.</p>
+                <p>The region along the mountain is a wildlife reserve, housing many species varying from elephants to leopards, and including many endemic species. Adam's Peak is important as a watershed. The districts to the south and the east of Adam's Peak yield precious stones—emeralds, rubies and sapphires, for which the island has been famous, and which earned for its ancient name of Ratnadvipa.</p>
+                <p>For a long time, Adam's Peak was extremely difficult to access, but today, the mountain can be climbed by at least six trails: from Ratnapura via the Palabaddala or Kuruwita-Erathna trail; from Nallathanni or Maskeliya via Hatton; or from Murraywatte or Malimboda. The Nallathanni and Palabaddala routes are the most frequented. The usual route taken by most pilgrims is ascent via Hatton and descent via Ratnapura.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Angel Falls Modal -->
+    <div id="modal10" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <img src="p10.jpg" alt="Angel Falls">
+                <h2>Angel Falls, Venezuela</h2>
+                <span class="close-modal" onclick="closeModal('modal10')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Angel Falls is a waterfall in Venezuela. It is the world's highest uninterrupted waterfall, with a height of 979 meters (3,212 ft) and a plunge of 807 meters (2,648 ft). The waterfall drops over the edge of the Auyán-tepui mountain in the Canaima National Park, a UNESCO World Heritage site in the Gran Sabana region of Bolívar State.</p>
+                <p>The height of the fall is so great that before getting anywhere near the ground, much of the water is evaporated or carried away as a fine mist by the strong wind. The base of the falls feeds into the Kerep River (alternatively known as the Río Gauya), which flows into the Churun River, a tributary of the Carrao River.</p>
+                <p>The waterfall has been known as Angel Falls since the mid-20th century; they are named after Jimmie Angel, a US aviator, who was the first person to fly over the falls. Angel's ashes were scattered over the falls on 2 July 1960. The common Spanish name Salto Ángel derives from his surname. In 2009, President Hugo Chávez announced his intention to change the name to the purported original indigenous Pemon term ("Kerepakupai Merú"), meaning "waterfall of the deepest place", on the grounds that the nation's most famous landmark should bear an indigenous name.</p>
+                <p>During the dry season (December to March), there is less water seen than in the other months. The falls cannot be seen on cloudy days, and there is no guarantee visitors will see them on any given day. The falls are located in an isolated jungle region of Venezuela, and a flight from Puerto Ordaz or Ciudad Bolívar is required to reach Canaima camp, the starting point for river trips to the base of the falls.</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container footer-content">
+            <p>Beyond the Map - Discovering the World's Hidden Gems</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Modal functions
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>

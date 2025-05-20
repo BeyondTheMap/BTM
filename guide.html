@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Travel Guide - Beyond the Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== Global Styles ===== */
+        :root {
+            --primary: #FF7E5F;
+            --secondary: #FEB47B;
+            --dark: #2D3436;
+            --light: #F9F9F9;
+            --text: #555555;
+            --accent: #0984E3;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+           body {
+    font-family: 'Open Sans', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    background-image: url('12.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+                      }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* ===== Header & Navigation ===== */ 
+        header {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            font-family: 'Montserrat', sans-serif;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        /* ===== Hero Section ===== */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('guide-hero.jpg') no-repeat center center/cover;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            margin-bottom: 80px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            animation: fadeInUp 1.2s ease;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 1.4s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* ===== Guide Sections ===== */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .section-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        /* Planning Section */
+        .planning-guide {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .guide-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            border-top: 4px solid var(--primary);
+        }
+        
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .step-icon {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: -35px auto 20px;
+            font-size: 1.8rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .step-content {
+            padding: 0 25px 30px;
+            text-align: center;
+        }
+        
+        .step-content h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        /* Packing Section */
+        .packing-guide {
+            padding: 80px 0;
+            background-color: #f5f5f5;
+        }
+        
+        .packing-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .packing-category {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .packing-category h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .packing-items {
+            list-style: none;
+        }
+        
+        .packing-items li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .packing-items li:before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+        
+        /* Budgeting Section */
+        .budget-guide {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .budget-tips {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .budget-tip {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .budget-tip:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .budget-tip h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .budget-tip p {
+            margin-bottom: 15px;
+        }
+        
+        .budget-tip .tip-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* Safety Section */
+        .safety-guide {
+            padding: 80px 0;
+            background-color: #f5f5f5;
+        }
+        
+        .safety-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .safety-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .safety-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .safety-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .safety-content {
+            padding: 25px;
+        }
+        
+        .safety-content h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        /* Resources Section */
+        .resources {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .resource-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s;
+            border-top: 3px solid var(--primary);
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .resource-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .resource-card h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .resource-card a {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .resource-card a:hover {
+            color: var(--accent);
+        }
+        
+        /* ===== Footer ===== */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-column p {
+            margin-bottom: 15px;
+            color: #bbb;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        /* ===== Animations ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* ===== Responsive Design ===== */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 15px 5px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== Header ===== -->
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <i class="fas fa-map-marked-alt"></i>
+                Beyond the Map
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="places.html">Places to Travel</a></li>
+                    <li><a href="guide.html">Traveling Guide</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== Hero Section ===== -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Your Ultimate Travel Guide</h1>
+            <p>Expert tips, packing lists, budgeting advice, and safety information to make your journeys unforgettable</p>
+            <a href="#planning" class="btn">Start Exploring</a>
+        </div>
+    </section>
+
+    <!-- ===== Planning Guide Section ===== -->
+    <section class="planning-guide" id="planning">
+        <div class="container">
+            <div class="section-title">
+                <h2>Travel Planning Guide</h2>
+                <p>Everything you need to plan the perfect trip, from choosing destinations to creating itineraries</p>
+            </div>
+            
+            <div class="guide-steps">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="fas fa-search-location"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>Choose Your Destination</h3>
+                        <p>Research destinations based on your interests, budget, and travel style. Consider factors like weather, local events, and travel restrictions.</p>
+                    </div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>Set Travel Dates</h3>
+                        <p>Consider off-peak seasons for better deals and fewer crowds. Be flexible with dates to find the best flight prices.</p>
+                    </div>
+                </div>
+                
+                <div class="step-card">
+                    <div class="step-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="step-content">
+                        <h3>Create an Itinerary</h3>
+                        <p>Balance must-see attractions with free time for spontaneous exploration. Group nearby activities together to save time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Packing Guide Section ===== -->
+    <section class="packing-guide">
+        <div class="container">
+            <div class="section-title">
+                <h2>Packing Essentials</h2>
+                <p>Smart packing lists for every type of traveler and destination</p>
+            </div>
+            
+            <div class="packing-list">
+                <div class="packing-category">
+                    <h3>Clothing Essentials</h3>
+                    <ul class="packing-items">
+                        <li>Versatile, mix-and-match outfits</li>
+                        <li>Comfortable walking shoes</li>
+                        <li>Weather-appropriate layers</li>
+                        <li>Swimwear (if applicable)</li>
+                        <li>Sleepwear</li>
+                        <li>Light jacket or sweater</li>
+                    </ul>
+                </div>
+                
+                <div class="packing-category">
+                    <h3>Travel Documents</h3>
+                    <ul class="packing-items">
+                        <li>Passport (with copies)</li>
+                        <li>Visas and travel insurance</li>
+                        <li>Flight/train/hotel confirmations</li>
+                        <li>Emergency contacts</li>
+                        <li>Credit cards and local currency</li>
+                        <li>Driver's license/ID</li>
+                    </ul>
+                </div>
+                
+                <div class="packing-category">
+                    <h3>Tech & Gadgets</h3>
+                    <ul class="packing-items">
+                        <li>Smartphone and charger</li>
+                        <li>Universal power adapter</li>
+                        <li>Portable power bank</li>
+                        <li>Camera (optional)</li>
+                        <li>Headphones</li>
+                        <li>E-reader or tablet</li>
+                    </ul>
+                </div>
+                
+                <div class="packing-category">
+                    <h3>Health & Toiletries</h3>
+                    <ul class="packing-items">
+                        <li>Prescription medications</li>
+                        <li>Basic first aid kit</li>
+                        <li>Travel-sized toiletries</li>
+                        <li>Sunscreen and lip balm</li>
+                        <li>Hand sanitizer</li>
+                        <li>Insect repellent</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Budgeting Guide Section ===== -->
+    <section class="budget-guide">
+        <div class="container">
+            <div class="section-title">
+                <h2>Budget Travel Tips</h2>
+                <p>How to see the world without breaking the bank</p>
+            </div>
+            
+            <div class="budget-tips">
+                <div class="budget-tip">
+                    <h3><span class="tip-number">1</span> Travel Off-Season</h3>
+                    <p>Prices for flights and accommodations can be 30-50% cheaper during shoulder seasons. You'll also avoid crowds at popular attractions.</p>
+                </div>
+                
+                <div class="budget-tip">
+                    <h3><span class="tip-number">2</span> Use Price Alerts</h3>
+                    <p>Set up flight price alerts on Google Flights or Skyscanner. Book when prices drop, typically 3-4 months before departure for international flights.</p>
+                </div>
+                
+                <div class="budget-tip">
+                    <h3><span class="tip-number">3</span> Eat Like a Local</h3>
+                    <p>Avoid touristy restaurants near attractions. Visit local markets, street food stalls, or dine where locals eat for authentic and affordable meals.</p>
+                </div>
+                
+                <div class="budget-tip">
+                    <h3><span class="tip-number">4</span> Free Walking Tours</h3>
+                    <p>Many cities offer free (tip-based) walking tours led by locals. They're a great way to orient yourself and learn history from passionate guides.</p>
+                </div>
+                
+                <div class="budget-tip">
+                    <h3><span class="tip-number">5</span> Public Transportation</h3>
+                    <p>Skip expensive taxis and use buses, trains, or subways. Many cities offer tourist passes for unlimited rides at discounted rates.</p>
+                </div>
+                
+                <div class="budget-tip">
+                    <h3><span class="tip-number">6</span> Alternative Accommodations</h3>
+                    <p>Consider hostels, guesthouses, or vacation rentals instead of hotels. House sitting or home exchanges can provide free lodging.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Safety Guide Section ===== -->
+    <section class="safety-guide">
+        <div class="container">
+            <div class="section-title">
+                <h2>Travel Safety Tips</h2>
+                <p>Stay safe and prepared while exploring the world</p>
+            </div>
+            
+            <div class="safety-cards">
+                <div class="safety-card">
+                    <img src="safety1.jpg" alt="Travel Safety">
+                    <div class="safety-content">
+                        <h3>Research Your Destination</h3>
+                        <p>Check government travel advisories and learn about local laws, customs, and potential scams. Know emergency numbers and embassy locations.</p>
+                    </div>
+                </div>
+                
+                <div class="safety-card">
+                    <img src="safety2.jpg" alt="Health Safety">
+                    <div class="safety-content">
+                        <h3>Health Precautions</h3>
+                        <p>Get recommended vaccinations, pack a medical kit, and research local healthcare options. Drink bottled water in areas with questionable sanitation.</p>
+                    </div>
+                </div>
+                
+                <div class="safety-card">
+                    <img src="safety3.jpg" alt="Money Safety">
+                    <div class="safety-content">
+                        <h3>Protect Your Belongings</h3>
+                        <p>Use anti-theft bags, keep valuables in hotel safes, and carry only what you need. Make digital copies of important documents.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Resources Section ===== -->
+    <section class="resources">
+        <div class="container">
+            <div class="section-title">
+                <h2>Travel Resources</h2>
+                <p>Essential tools and websites to enhance your travel experience</p>
+            </div>
+            
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h3>Flight Search</h3>
+                    <p>Find the best flight deals with these trusted flight search engines.</p>
+                    <a href="#">Explore Flight Tools →</a>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <h3>Accommodation</h3>
+                    <p>Discover unique places to stay from hotels to vacation rentals.</p>
+                    <a href="#">Find Places to Stay →</a>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-map"></i>
+                    </div>
+                    <h3>Navigation</h3>
+                    <p>Essential apps and tools for getting around in foreign places.</p>
+                    <a href="#">Get Navigation Help →</a>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3>Language Tools</h3>
+                    <p>Overcome language barriers with these helpful translation apps.</p>
+                    <a href="#">Learn Language Tools →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Beyond the Map</h3>
+                    <p>Discovering hidden gems and helping travelers explore the world's most beautiful destinations since 2023.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/channel/UC7JrLxQiGeBWIG-39zfrVMw" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="bm.html">Home</a></li>
+                        <li><a href="places.html">Places to Travel</a></li>
+                        <li><a href="guide.html">Traveling Guide</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Travel Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Travel Insurance</a></li>
+                        <li><a href="#">Visa Information</a></li>
+                        <li><a href="#">Packing Lists</a></li>
+                        <li><a href="#">Travel Deals</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe for travel tips, destination guides, and exclusive deals.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your Email Address" required>
+                        <button type="submit" class="btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Beyond the Map. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Newsletter form submission
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input').value;
+            alert(`Thank you for subscribing with ${email}! You'll receive our next travel guide.`);
+            this.reset();
+        });
+    </script>
+</body>
+</html>
